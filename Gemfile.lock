@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.1)
+    colorize (0.7.7)
     method_source (0.8.2)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -16,6 +17,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   pry
   rake
   require_all
