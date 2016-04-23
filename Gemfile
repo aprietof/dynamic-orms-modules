@@ -2,7 +2,7 @@
 source "https://rubygems.org"
 
 # gem "rails"
-require 'pry'
-require 'rake'
-require 'require_all'
-require 'sqlite3'
+gem 'pry'
+gem 'sqlite3'
+gem 'require_all'
+gem 'rake'
