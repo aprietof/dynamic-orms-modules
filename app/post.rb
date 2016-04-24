@@ -3,7 +3,8 @@ class Post
   ATRIBUTES = {
     :id => "INTEGER PRIMARY KEY",
     :title => "TEXT",
-    :content => "TEXT"
+    :content => "TEXT",
+    :author_name => "TEXT"
   }
 
   ATRIBUTES.keys.each do |attribute_name|
@@ -14,12 +15,16 @@ class Post
     "#{self.to_s.downcase}s"
   end
 
+  def self.create_sql
+    ATRIBUTES.collect do |attribute_name, schema|
+      "#{attribute_name} #{schema}"
+    end.join(",")
+  end
+
   def self.create_table
     sql = <<-SQL
       CREATE TABLE IF NOT EXISTS #{table_name} (
-      id INTEGER PRIMARY KEY,
-      title TEXT,
-      content TEXT
+        #{self.create_sql}
       )
     SQL
 
@@ -55,13 +60,29 @@ class Post
     !!self.id
   end
 
+  def self.attribute_names_for_insert
+    ATRIBUTES.keys[1..-1].join(",")
+  end
+
+  def self.question_marks_for_insert
+    ATRIBUTES.keys[1..-1].size.times.collect{"?"}.join(",")
+  end
+
+  def self.sql_for_update
+    ATRIBUTES.keys[1..-1].collect {|attribute_name| "#{attribute_name} = ?"}.join(",")
+  end
+
+  def attribute_values
+    ATRIBUTES.keys[1..-1].collect {|attribute_name| self.send(attribute_name)}
+  end
+
   private
   def insert
     sql = <<-SQL
-      INSERT INTO #{self.class.table_name} (title, content) VALUES (?, ?)
+      INSERT INTO #{self.class.table_name} (#{self.class.attribute_names_for_insert}) VALUES (#{self.class.question_marks_for_insert})
     SQL
 
-    DB[:conn].execute(sql, self.title, self.content)
+    DB[:conn].execute(sql, *attribute_values)
     self.id = DB[:conn].execute("SELECT last_insert_rowid();").flatten.first
     puts "Object Inserted".green
     self.id
@@ -69,10 +90,10 @@ class Post
 
   def update
     sql = <<-SQL
-      UPDATE posts SET title = ?, content = ? WHERE id = ?
+      UPDATE #{self.class.table_name} SET #{self.class.sql_for_update} WHERE id = ?
     SQL
 
-    DB[:conn].execute(sql, self.title, self.content, self.id)
+    DB[:conn].execute(sql, *attribute_values, self.id)
     puts "Object Updated".green
     self.id
   end
