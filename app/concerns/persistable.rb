@@ -58,6 +58,7 @@ module Persistable
 
 
   module InstanceMethods
+
     def ==(other)
       self.id == other.id
     end

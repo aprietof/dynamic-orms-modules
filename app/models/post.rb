@@ -1,22 +1,21 @@
-class Author
+class Post
 
-  ATRIBUTES = {
+  ATTRIBUTES = {
     :id => "INTEGER PRIMARY KEY",
-    :name => "TEXT",
-    :state => "TEXT",
-    :city => "TEXT"
+    :title => "TEXT",
+    :content => "TEXT",
+    :author_name => "TEXT"
   }
 
   def self.attributes
-    ATRIBUTES
+    ATTRIBUTES
   end
 
-  ATRIBUTES.keys.each do |attribute_name|
+  ATTRIBUTES.keys.each do |attribute_name|
     attr_accessor attribute_name
   end
 
   include Persistable::InstanceMethods
   extend Persistable::ClassMethods
-
 
 end

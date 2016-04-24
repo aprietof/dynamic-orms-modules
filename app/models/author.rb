@@ -1,17 +1,17 @@
-class Post
+class Author
 
-  ATRIBUTES = {
+  ATTRIBUTES = {
     :id => "INTEGER PRIMARY KEY",
-    :title => "TEXT",
-    :content => "TEXT",
-    :author_name => "TEXT"
+    :name => "TEXT",
+    :state => "TEXT",
+    :city => "TEXT",
   }
 
   def self.attributes
-    ATRIBUTES
+    ATTRIBUTES
   end
 
-  ATRIBUTES.keys.each do |attribute_name|
+  ATTRIBUTES.keys.each do |attribute_name|
     attr_accessor attribute_name
   end
 
