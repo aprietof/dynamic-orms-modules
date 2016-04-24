@@ -1,10 +1,10 @@
-class Post
+class Author
 
   ATRIBUTES = {
     :id => "INTEGER PRIMARY KEY",
-    :title => "TEXT",
-    :content => "TEXT",
-    :author_name => "TEXT"
+    :name => "TEXT",
+    :state => "TEXT",
+    :city => "TEXT"
   }
 
   def self.attributes
@@ -17,5 +17,6 @@ class Post
 
   include Persistable::InstanceMethods
   extend Persistable::ClassMethods
+
 
 end
