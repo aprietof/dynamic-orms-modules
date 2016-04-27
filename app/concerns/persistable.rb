@@ -1,6 +1,15 @@
 module Persistable
 
   module ClassMethods
+    def attributes
+      self::ATTRIBUTES
+    end
+
+    def self.extended(base)
+      base.attributes.keys.each do |attribute_name|
+        base.send(:attr_accessor, attribute_name)
+      end
+    end
 
     def table_name
       "#{self.to_s.downcase}s"
